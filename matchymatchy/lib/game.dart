@@ -10,16 +10,13 @@ class Game extends StatefulWidget {
 class _GameState extends State<Game> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Builder(
-        builder: (context){
     return Scaffold(
       backgroundColor: Colors.lightGreen,
-      body: Column(
+      body: Center(
+        child: Column(
          mainAxisAlignment: MainAxisAlignment.center,
         children: [
-        Text(
+        const Text(
         'Matchy Matchy',
         style: TextStyle(
           fontSize: 50,
@@ -28,22 +25,23 @@ class _GameState extends State<Game> {
             ),
            ),
            const SizedBox(height: 20),
-
-           ElevatedButton(onPressed: (){
-
-          Navigator.pop(context); 
-
-          }, child: Text('Back'), style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.lightGreen,
-            padding: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-            textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),),
-        ]
-          ),
-         );
+          TextButton(
+                    onPressed: () {
+                     Navigator.pop(context); 
+                    }, 
+                    child: Text(
+                      'Back',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.75),
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
         }
-      ),
-    );  
-  }
 }
