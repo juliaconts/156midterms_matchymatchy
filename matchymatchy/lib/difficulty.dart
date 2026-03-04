@@ -84,7 +84,7 @@ class _DifficultyState extends State<Difficulty>
                     child: Column(
                       children: [
                         Image.asset(
-                          'assets/logo.png',
+                          'assets/logo2.png',
                           height: 250,
                         ),
                         Text(
@@ -111,26 +111,23 @@ class _DifficultyState extends State<Difficulty>
                       children: [
                         _DifficultyButton(
                           label: 'Easy',
-                          onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Game()),
-                          ),
+                          onPressed: () =>Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => const Game(difficulty: GameDifficulty.easy),
+                          )),
                         ),
                         const SizedBox(height: 12),
                         _DifficultyButton(
                           label: 'Medium',
-                          onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Game()),
-                          ),
+                          onPressed: () => Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => const Game(difficulty: GameDifficulty.medium),
+                          )),
                         ),
                         const SizedBox(height: 12),
                         _DifficultyButton(
                           label: 'Hard',
-                          onPressed: () => Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => Game()),
-                          ),
+                          onPressed: () => Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => const Game(difficulty: GameDifficulty.hard),
+                          )),
                         ),
                       ],
                     ),
