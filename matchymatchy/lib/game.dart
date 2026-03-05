@@ -9,9 +9,12 @@ enum GameDifficulty { easy, medium, hard }
 extension GameDifficultyLabel on GameDifficulty {
   String get label {
     switch (this) {
-      case GameDifficulty.easy:   return 'EASY';
-      case GameDifficulty.medium: return 'MEDIUM';
-      case GameDifficulty.hard:   return 'HARD';
+      case GameDifficulty.easy:
+        return 'EASY';
+      case GameDifficulty.medium:
+        return 'MEDIUM';
+      case GameDifficulty.hard:
+        return 'HARD';
     }
   }
 }
@@ -35,28 +38,43 @@ class _DifficultyConfig {
     // returns the config based on the difficulty level
     switch (d) {
       case GameDifficulty.easy:
-        return const _DifficultyConfig(pairs: 3, seconds: 50,  crossAxisCount: 3, childAspectRatio: 0.68);
+        return const _DifficultyConfig(
+          pairs: 3,
+          seconds: 50,
+          crossAxisCount: 3,
+          childAspectRatio: 0.68,
+        );
       case GameDifficulty.medium:
-        return const _DifficultyConfig(pairs: 6, seconds: 40, crossAxisCount: 3, childAspectRatio: 0.90);
+        return const _DifficultyConfig(
+          pairs: 6,
+          seconds: 40,
+          crossAxisCount: 3,
+          childAspectRatio: 0.90,
+        );
       case GameDifficulty.hard:
-        return const _DifficultyConfig(pairs: 8, seconds: 30,  crossAxisCount: 4, childAspectRatio: 0.72);
+        return const _DifficultyConfig(
+          pairs: 8,
+          seconds: 30,
+          crossAxisCount: 4,
+          childAspectRatio: 0.72,
+        );
     }
   }
 }
 
-// colors 
+// colors
 const List<Color> _colorPool = [
-  Color(0xFFE53935), 
+  Color(0xFFE53935),
   Color.fromARGB(255, 19, 70, 113),
-  Color(0xFFFDD835), 
-  Color(0xFF8E24AA), 
-  Color.fromARGB(255, 255, 71, 15), 
-  Color.fromARGB(255, 152, 243, 255), 
-  Color.fromARGB(255, 14, 67, 17), 
-  Color.fromARGB(255, 110, 80, 10), 
+  Color(0xFFFDD835),
+  Color(0xFF8E24AA),
+  Color.fromARGB(255, 255, 71, 15),
+  Color.fromARGB(255, 152, 243, 255),
+  Color.fromARGB(255, 14, 67, 17),
+  Color.fromARGB(255, 110, 80, 10),
 ];
 
-// card model 
+// card model
 
 class CardModel {
   final int id;
@@ -138,9 +156,12 @@ class _GameState extends State<Game> with TickerProviderStateMixin {
     );
 
     _flipAnimations = _flipControllers
-        .map((c) => Tween<double>(begin: 0, end: 1).animate(
-              CurvedAnimation(parent: c, curve: Curves.easeInOut),
-            ))
+        .map(
+          (c) => Tween<double>(
+            begin: 0,
+            end: 1,
+          ).animate(CurvedAnimation(parent: c, curve: Curves.easeInOut)),
+        )
         .toList();
 
     _startTimer();
@@ -155,7 +176,7 @@ class _GameState extends State<Game> with TickerProviderStateMixin {
     super.dispose();
   }
 
-// timer logic
+  // timer logic
   void _startTimer() {
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (_) {
@@ -171,10 +192,8 @@ class _GameState extends State<Game> with TickerProviderStateMixin {
     });
   }
 
-
-// flip logic
+  // flip logic
   void _onCardTap(int index) {
-
     // checking if the card can be flipped
     if (_isChecking) return;
     if (_cards[index].isMatched) return;
@@ -213,7 +232,8 @@ class _GameState extends State<Game> with TickerProviderStateMixin {
           }
         });
       });
-    } else { // flip the card back after a short delay
+    } else {
+      // flip the card back after a short delay
       Future.delayed(const Duration(milliseconds: 600), () {
         if (!mounted) return;
         setState(() {
@@ -228,14 +248,14 @@ class _GameState extends State<Game> with TickerProviderStateMixin {
     }
   }
 
-// converts the seconds left into a mm:ss format
+  // converts the seconds left into a mm:ss format
   String get _timerLabel {
     final m = _secondsLeft ~/ 60;
     final s = _secondsLeft % 60;
     return '${m.toString().padLeft(2, '0')}:${s.toString().padLeft(2, '0')}';
   }
 
-// change the color based on time left
+  // change the color based on time left
   Color get _timerColor {
     if (_secondsLeft > 30) return Colors.white;
     if (_secondsLeft > 10) return Colors.yellow;
@@ -249,35 +269,49 @@ class _GameState extends State<Game> with TickerProviderStateMixin {
   }
 
   Widget _buildBackground() => Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFF81C784), Color(0xFF4CAF50), Color(0xFF388E3C)],
-          ),
-        ),
-      );
+    decoration: const BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [Color(0xFF81C784), Color(0xFF4CAF50), Color(0xFF388E3C)],
+      ),
+    ),
+  );
 
   Widget _buildGameScreen() {
     return Scaffold(
       body: Stack(
         children: [
           _buildBackground(),
-          Positioned(top: -60, right: -60, child: _Circle(size: 200, opacity: 0.10)),
-          Positioned(bottom: -80, left: -40, child: _Circle(size: 260, opacity: 0.09)),
+          Positioned(
+            top: -60,
+            right: -60,
+            child: _Circle(size: 200, opacity: 0.10),
+          ),
+          Positioned(
+            bottom: -80,
+            left: -40,
+            child: _Circle(size: 260, opacity: 0.09),
+          ),
           SafeArea(
             child: Column(
               children: [
                 // timer and exit button
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
+                  ),
                   child: Row(
                     children: [
                       const SizedBox(width: 48),
                       Expanded(
                         child: Center(
                           child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 8,
+                            ),
                             decoration: BoxDecoration(
                               color: Colors.black26,
                               borderRadius: BorderRadius.circular(30),
@@ -285,7 +319,11 @@ class _GameState extends State<Game> with TickerProviderStateMixin {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(Icons.timer_outlined, color: Colors.white70, size: 18),
+                                const Icon(
+                                  Icons.timer_outlined,
+                                  color: Colors.white70,
+                                  size: 18,
+                                ),
                                 const SizedBox(width: 6),
                                 Text(
                                   _timerLabel,
@@ -294,7 +332,9 @@ class _GameState extends State<Game> with TickerProviderStateMixin {
                                     fontSize: 22,
                                     fontWeight: FontWeight.w800,
                                     letterSpacing: 2,
-                                    fontFeatures: const [FontFeature.tabularFigures()],
+                                    fontFeatures: const [
+                                      FontFeature.tabularFigures(),
+                                    ],
                                   ),
                                 ),
                               ],
@@ -311,7 +351,11 @@ class _GameState extends State<Game> with TickerProviderStateMixin {
                             color: Colors.black26,
                             borderRadius: BorderRadius.circular(12),
                           ),
-                          child: const Icon(Icons.close_rounded, color: Colors.white, size: 22),
+                          child: const Icon(
+                            Icons.close_rounded,
+                            color: Colors.white,
+                            size: 22,
+                          ),
                         ),
                       ),
                     ],
@@ -376,7 +420,10 @@ class _GameState extends State<Game> with TickerProviderStateMixin {
                 ? Transform(
                     alignment: Alignment.center,
                     transform: Matrix4.identity()..rotateY(pi),
-                    child: _CardFace(color: card.color, isMatched: card.isMatched),
+                    child: _CardFace(
+                      color: card.color,
+                      isMatched: card.isMatched,
+                    ),
                   )
                 : const _CardBack(),
           );
@@ -385,7 +432,7 @@ class _GameState extends State<Game> with TickerProviderStateMixin {
     );
   }
 
-// end screen
+  // end screen
   Widget _buildEndScreen() {
     return Scaffold(
       body: Stack(
@@ -395,7 +442,10 @@ class _GameState extends State<Game> with TickerProviderStateMixin {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(_gameWon ? '🎉' : '⏰', style: const TextStyle(fontSize: 64)),
+                Text(
+                  _gameWon ? '🎉' : '⏰',
+                  style: const TextStyle(fontSize: 64),
+                ),
                 const SizedBox(height: 16),
                 Text(
                   _gameWon ? 'You matched them all!' : 'Time\'s up!',
@@ -411,7 +461,10 @@ class _GameState extends State<Game> with TickerProviderStateMixin {
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
                       'Better luck next time',
-                      style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 15),
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.7),
+                        fontSize: 15,
+                      ),
                     ),
                   ),
                 const SizedBox(height: 40),
@@ -424,11 +477,17 @@ class _GameState extends State<Game> with TickerProviderStateMixin {
                       backgroundColor: Colors.white,
                       foregroundColor: const Color(0xFF388E3C),
                       elevation: 6,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
                     ),
                     child: const Text(
                       'Back',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800, letterSpacing: 0.8),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 0.8,
+                      ),
                     ),
                   ),
                 ),
@@ -440,7 +499,6 @@ class _GameState extends State<Game> with TickerProviderStateMixin {
     );
   }
 }
-
 
 // card face
 class _CardFace extends StatelessWidget {
@@ -468,31 +526,32 @@ class _CardFace extends StatelessWidget {
         ],
       ),
       child: isMatched
-          ? const Center(child: Icon(Icons.check_rounded, color: Colors.white, size: 36))
+          ? const Center(
+              child: Icon(Icons.check_rounded, color: Colors.white, size: 36),
+            )
           : null,
     );
   }
 }
 
-
-// back of card 
+// back of card
 class _CardBack extends StatelessWidget {
   const _CardBack();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: Colors.white12, width: 1.5),
-        boxShadow: const [
-          BoxShadow(color: Colors.black38, blurRadius: 8, offset: Offset(0, 4)),
-        ],
-      ),
-      child: Center(
-        child: Icon(Icons.question_mark_rounded, color: Colors.white.withOpacity(0.25), size: 32),
-      ),
+    // return Container(
+    //   decoration: BoxDecoration(
+    //     // color: Colors.black,
+    //     // borderRadius: BorderRadius.circular(14),
+    //     // border: Border.all(color: Colors.white12, width: 1.5),
+    //     boxShadow: const [
+    //       BoxShadow(color: Colors.black38, blurRadius: 8, offset: Offset(0, 4)),
+    //     ],
+    //   ),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(5),
+      child: Image.asset("assets/cards/back-card.png", fit: BoxFit.cover),
     );
   }
 }

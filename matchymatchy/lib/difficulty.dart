@@ -27,13 +27,13 @@ class _DifficultyState extends State<Difficulty>
       curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
     );
 
-    _slideUp = Tween<Offset>(
-      begin: const Offset(0, 0.25),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
-    ));
+    _slideUp = Tween<Offset>(begin: const Offset(0, 0.25), end: Offset.zero)
+        .animate(
+          CurvedAnimation(
+            parent: _controller,
+            curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
+          ),
+        );
 
     _controller.forward();
   }
@@ -67,10 +67,26 @@ class _DifficultyState extends State<Difficulty>
             ),
           ),
 
-          Positioned(top: -60, right: -60, child: _Circle(size: 200, opacity: 0.12)),
-          Positioned(top: 120, left: -40, child: _Circle(size: 130, opacity: 0.08)),
-          Positioned(bottom: -80, left: -40, child: _Circle(size: 260, opacity: 0.10)),
-          Positioned(bottom: 130, right: -30, child: _Circle(size: 150, opacity: 0.09)),
+          Positioned(
+            top: -60,
+            right: -60,
+            child: _Circle(size: 200, opacity: 0.12),
+          ),
+          Positioned(
+            top: 120,
+            left: -40,
+            child: _Circle(size: 130, opacity: 0.08),
+          ),
+          Positioned(
+            bottom: -80,
+            left: -40,
+            child: _Circle(size: 260, opacity: 0.10),
+          ),
+          Positioned(
+            bottom: 130,
+            right: -30,
+            child: _Circle(size: 150, opacity: 0.09),
+          ),
 
           SafeArea(
             child: Column(
@@ -83,10 +99,7 @@ class _DifficultyState extends State<Difficulty>
                     opacity: _fadeIn!,
                     child: Column(
                       children: [
-                        Image.asset(
-                          'assets/logo2.png',
-                          height: 250,
-                        ),
+                        Image.asset('assets/logos/logo2.png', height: 250),
                         Text(
                           'Choose a difficulty',
                           style: TextStyle(
@@ -111,23 +124,35 @@ class _DifficultyState extends State<Difficulty>
                       children: [
                         _DifficultyButton(
                           label: 'Easy',
-                          onPressed: () =>Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => const Game(difficulty: GameDifficulty.easy),
-                          )),
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const Game(difficulty: GameDifficulty.easy),
+                            ),
+                          ),
                         ),
                         const SizedBox(height: 12),
                         _DifficultyButton(
                           label: 'Medium',
-                          onPressed: () => Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => const Game(difficulty: GameDifficulty.medium),
-                          )),
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const Game(difficulty: GameDifficulty.medium),
+                            ),
+                          ),
                         ),
                         const SizedBox(height: 12),
                         _DifficultyButton(
                           label: 'Hard',
-                          onPressed: () => Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => const Game(difficulty: GameDifficulty.hard),
-                          )),
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const Game(difficulty: GameDifficulty.hard),
+                            ),
+                          ),
                         ),
                       ],
                     ),

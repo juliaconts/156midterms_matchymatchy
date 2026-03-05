@@ -44,13 +44,13 @@ class _HomeScreenState extends State<HomeScreen>
       curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
     );
 
-    _slideUp = Tween<Offset>(
-      begin: const Offset(0, 0.25),
-      end: Offset.zero,
-    ).animate(CurvedAnimation(
-      parent: _controller,
-      curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
-    ));
+    _slideUp = Tween<Offset>(begin: const Offset(0, 0.25), end: Offset.zero)
+        .animate(
+          CurvedAnimation(
+            parent: _controller,
+            curve: const Interval(0.0, 0.6, curve: Curves.easeOut),
+          ),
+        );
 
     _scaleIn = Tween<double>(begin: 0.85, end: 1.0).animate(
       CurvedAnimation(
@@ -115,17 +115,14 @@ class _HomeScreenState extends State<HomeScreen>
               children: [
                 const Spacer(flex: 2),
 
-                // title 
+                // title
                 SlideTransition(
                   position: _slideUp,
                   child: FadeTransition(
                     opacity: _fadeIn,
                     child: Column(
                       children: [
-                        Image.asset(
-                          'assets/logo.png',
-                          height: 450,
-                        ),
+                        Image.asset('assets/logos/logo.png', height: 450),
                         const SizedBox(height: 1),
                         // Text(
                         //   'The memory card game',
@@ -161,8 +158,18 @@ class _HomeScreenState extends State<HomeScreen>
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 24, 81, 41),
-                          foregroundColor: const Color.fromARGB(255, 40, 94, 42),
+                          backgroundColor: const Color.fromARGB(
+                            255,
+                            24,
+                            81,
+                            41,
+                          ),
+                          foregroundColor: const Color.fromARGB(
+                            255,
+                            40,
+                            94,
+                            42,
+                          ),
                           elevation: 6,
                           shadowColor: Colors.black26,
                           shape: RoundedRectangleBorder(
