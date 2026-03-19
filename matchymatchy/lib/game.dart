@@ -24,12 +24,14 @@ class _DifficultyConfig {
   final int seconds;
   final int crossAxisCount;
   final double childAspectRatio;
+  final List<String> assets; 
 
   const _DifficultyConfig({
     required this.pairs,
     required this.seconds,
     required this.crossAxisCount,
     required this.childAspectRatio,
+    required this.assets, 
   });
 
   int get totalCards => pairs * 2;
@@ -43,6 +45,7 @@ class _DifficultyConfig {
           seconds: 50,
           crossAxisCount: 3,
           childAspectRatio: 0.68,
+          assets: _easyAssets, 
         );
       case GameDifficulty.medium:
         return const _DifficultyConfig(
@@ -50,6 +53,7 @@ class _DifficultyConfig {
           seconds: 40,
           crossAxisCount: 3,
           childAspectRatio: 0.90,
+          assets: _mediumAssets, 
         );
       case GameDifficulty.hard:
         return const _DifficultyConfig(
@@ -57,12 +61,40 @@ class _DifficultyConfig {
           seconds: 30,
           crossAxisCount: 4,
           childAspectRatio: 0.72,
+          assets: _hardAssets, 
         );
     }
   }
 }
 
-// colors
+//easy asset 
+const List<String> _easyAssets = [
+  'assets/cards/sir-nikko.png',
+  'assets/cards/sir-pan.png',
+  'assets/cards/sir-vic.png',
+]; 
+
+const List<String> _mediumAssets = [
+  'assets/cards/sir-nikko.png',
+  'assets/cards/sir-pan.png',
+  'assets/cards/sir-vic.png',
+  'assets/cards/neyro.png',
+  'assets/cards/cedric.png',
+  'assets/cards/clyde.png',
+]; 
+
+const List<String> _hardAssets = [
+  'assets/cards/angel.png',
+  'assets/cards/jave.png',
+  'assets/cards/hernia.png',
+   'assets/cards/neyro.png',
+  'assets/cards/cedric.png',
+  'assets/cards/clyde.png',
+  'assets/cards/keith.png',
+  'assets/cards/kent.png', 
+]; 
+
+/*colors
 const List<Color> _colorPool = [
   Color(0xFFE53935),
   Color.fromARGB(255, 19, 70, 113),
@@ -72,19 +104,21 @@ const List<Color> _colorPool = [
   Color.fromARGB(255, 152, 243, 255),
   Color.fromARGB(255, 14, 67, 17),
   Color.fromARGB(255, 110, 80, 10),
-];
+];*/
 
 // card model
 
 class CardModel {
   final int id;
-  final Color color;
+  //final Color color;
+  final String imagePath; 
   bool isFaceUp;
   bool isMatched;
 
   CardModel({
     required this.id,
-    required this.color,
+    //required this.color,
+    required this.imagePath, 
     this.isFaceUp = false,
     this.isMatched = false,
   });
@@ -127,13 +161,16 @@ class _GameState extends State<Game> with TickerProviderStateMixin {
     final rng = Random();
 
     // picks random colors and creates pair
-    final shuffledColors = List<Color>.from(_colorPool)..shuffle(rng);
+    //final shuffledColors = List<Color>.from(_colorPool)..shuffle(rng);
+    final shuffledImages = List<String>.from(_config.assets)..shuffle(rng);
 
     // matches the numver of pairs
     final List<CardModel> deck = [];
     for (int i = 0; i < _config.pairs; i++) {
-      deck.add(CardModel(id: i, color: shuffledColors[i]));
-      deck.add(CardModel(id: i, color: shuffledColors[i]));
+      //deck.add(CardModel(id: i, color: shuffledColors[i]));
+      //deck.add(CardModel(id: i, color: shuffledColors[i]));
+      deck.add(CardModel(id: i, imagePath: shuffledImages[i]));
+      deck.add(CardModel(id: i, imagePath: shuffledImages[i]));
     }
     // shuffles the deck -- makes sure that every game, cards are in different positions
     deck.shuffle(rng);
@@ -421,7 +458,7 @@ class _GameState extends State<Game> with TickerProviderStateMixin {
                     alignment: Alignment.center,
                     transform: Matrix4.identity()..rotateY(pi),
                     child: _CardFace(
-                      color: card.color,
+                      imagePath: card.imagePath,
                       isMatched: card.isMatched,
                     ),
                   )
@@ -502,34 +539,53 @@ class _GameState extends State<Game> with TickerProviderStateMixin {
 
 // card face
 class _CardFace extends StatelessWidget {
-  final Color color;
+  //final Color color;
+  final String imagePath;
   final bool isMatched;
-  const _CardFace({required this.color, required this.isMatched});
+  const _CardFace({required this.imagePath, required this.isMatched});
 
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
       decoration: BoxDecoration(
-        color: color,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(14),
         border: isMatched
             ? Border.all(color: Colors.white, width: 3)
             : Border.all(color: Colors.white24, width: 1.5),
         boxShadow: [
           BoxShadow(
-            color: color.withOpacity(0.45),
+            color: Colors.black.withOpacity(0.2),
             blurRadius: isMatched ? 18 : 8,
             spreadRadius: isMatched ? 3 : 0,
             offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: isMatched
-          ? const Center(
-              child: Icon(Icons.check_rounded, color: Colors.white, size: 36),
-            )
-          : null,
+      // We use ClipRRect so the image doesn't bleed over the rounded corners
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(14),
+        child: Stack(
+          children: [
+            // THE ACTUAL IMAGE
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset(imagePath, fit: BoxFit.contain),
+              ),
+            ),
+            // THE MATCHED OVERLAY
+            if (isMatched)
+              Container(
+                color: Colors.black26,
+                child: const Center(
+                  child: Icon(Icons.check_rounded, color: Colors.white, size: 36),
+                ),
+              ),
+          ],
+        ),
+      ),
     );
   }
 }
