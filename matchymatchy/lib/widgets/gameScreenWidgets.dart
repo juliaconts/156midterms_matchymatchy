@@ -1,0 +1,233 @@
+import 'dart:math';
+import 'package:flutter/material.dart';
+import '../config/difficultyConfig.dart';
+import '../widgets/appBackground.dart';
+import '../widgets/cardFace.dart';
+import '../widgets/cardBack.dart';
+import '../config/gamesScreenLogic.dart';
+
+// gamescreen widgets
+
+mixin GameScreenWidgets<T extends StatefulWidget> on State<T>, TickerProviderStateMixin<T>, GameScreenLogic<T> {
+  GameDifficulty get difficulty;
+
+  Widget buildGameScreen() {
+    return Scaffold(
+      body: Stack(
+        children: [
+          const AppBackground(),
+          Positioned(
+            top: -60,
+            right: -60,
+            child: BackgroundCircle(size: 200, opacity: 0.10),
+          ),
+          Positioned(
+            bottom: -80,
+            left: -40,
+            child: BackgroundCircle(size: 260, opacity: 0.09),
+          ),
+          SafeArea(
+            child: Column(
+              children: [
+                _buildTopBar(),
+                const SizedBox(height: 4),
+                _buildDifficultyLabel(),
+                const Spacer(),
+                _buildCardGrid(),
+                const Spacer(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildEndScreen() {
+    return Scaffold(
+      body: Stack(
+        children: [
+          const AppBackground(),
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  gameWon ? '🎉' : '⏰',
+                  style: const TextStyle(fontSize: 64),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  gameWon ? 'You matched them all!' : 'Time\'s up!',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 26,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                if (!gameWon) _buildLossSubtitle(),
+                const SizedBox(height: 40),
+                _buildBackButton(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTopBar() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+      child: Row(
+        children: [
+          const SizedBox(width: 48),
+          Expanded(child: Center(child: _buildTimerBadge())),
+          _buildExitButton(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTimerBadge() {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.black26,
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.timer_outlined, color: Colors.white70, size: 18),
+          const SizedBox(width: 6),
+          Text(
+            timerLabel,
+            style: TextStyle(
+              color: timerColor,
+              fontSize: 22,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 2,
+              fontFeatures: const [FontFeature.tabularFigures()],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildExitButton() {
+    return GestureDetector(
+      onTap: () => Navigator.pop(context),
+      child: Container(
+        width: 44,
+        height: 44,
+        decoration: BoxDecoration(
+          color: Colors.black26,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: const Icon(Icons.close_rounded, color: Colors.white, size: 22),
+      ),
+    );
+  }
+
+  Widget _buildDifficultyLabel() {
+    return Text(
+      difficulty.label,
+      style: TextStyle(
+        color: Colors.white.withOpacity(0.55),
+        fontSize: 11,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 3,
+      ),
+    );
+  }
+
+  Widget _buildCardGrid() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 24),
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: cards.length,
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: config.crossAxisCount,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          childAspectRatio: config.childAspectRatio,
+        ),
+        itemBuilder: (_, i) => _buildCard(i),
+      ),
+    );
+  }
+
+  Widget _buildCard(int index) {
+    final card = cards[index];
+    return GestureDetector(
+      onTap: () => onCardTap(index),
+      child: AnimatedBuilder(
+        animation: flipAnimations[index],
+        builder: (_, __) {
+          final angle = flipAnimations[index].value * pi;
+          final isFront = angle > pi / 2;
+          return Transform(
+            alignment: Alignment.center,
+            transform: Matrix4.identity()
+              ..setEntry(3, 2, 0.001)
+              ..rotateY(angle),
+            child: isFront
+                ? Transform(
+                    alignment: Alignment.center,
+                    transform: Matrix4.identity()..rotateY(pi),
+                    child: CardFace(
+                      imagePath: card.imagePath,
+                      isMatched: card.isMatched,
+                    ),
+                  )
+                : const CardBack(),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildLossSubtitle() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: Text(
+        'Better luck next time',
+        style: TextStyle(
+          color: Colors.white.withOpacity(0.7),
+          fontSize: 15,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBackButton() {
+    return SizedBox(
+      width: 200,
+      height: 52,
+      child: ElevatedButton(
+        onPressed: () => Navigator.pop(context),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.white,
+          foregroundColor: const Color(0xFF388E3C),
+          elevation: 6,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
+        ),
+        child: const Text(
+          'Back',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w800,
+            letterSpacing: 0.8,
+          ),
+        ),
+      ),
+    );
+  }
+}
