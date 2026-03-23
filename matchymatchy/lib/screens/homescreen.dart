@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:matchymatchy/services/audio_manager.dart';
 import '../widgets/decoratedScreen.dart';
 import '../animations/animations.dart';
 import 'difficultyScreen.dart';
@@ -25,8 +26,9 @@ class _HomeScreenState extends State<HomeScreen>
         curve: const Interval(0.4, 1.0, curve: Curves.elasticOut),
       ),
     );
-  }
 
+    AudioManager.playBgm();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +37,7 @@ class _HomeScreenState extends State<HomeScreen>
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Spacer(flex: 2),
-          fadeSlide(
-            child: Image.asset('assets/logos/logo.png', height: 450),
-          ),
+          fadeSlide(child: Image.asset('assets/logos/logo.png', height: 450)),
           const Spacer(flex: 3),
           ScaleTransition(
             scale: _scaleIn,
@@ -49,9 +49,7 @@ class _HomeScreenState extends State<HomeScreen>
                 child: ElevatedButton(
                   onPressed: () => Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (_) => const DifficultyScreen(),
-                    ),
+                    MaterialPageRoute(builder: (_) => const DifficultyScreen()),
                   ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 24, 81, 41),

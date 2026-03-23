@@ -5,11 +5,7 @@ class CardFace extends StatelessWidget {
   final String imagePath;
   final bool isMatched;
 
-  const CardFace({
-    super.key,
-    required this.imagePath,
-    required this.isMatched,
-  });
+  const CardFace({super.key, required this.imagePath, required this.isMatched});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +32,7 @@ class CardFace extends StatelessWidget {
           children: [
             Center(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(1.0),
                 child: Image.asset(imagePath, fit: BoxFit.contain),
               ),
             ),
@@ -44,7 +40,11 @@ class CardFace extends StatelessWidget {
               Container(
                 color: Colors.black26,
                 child: const Center(
-                  child: Icon(Icons.check_rounded, color: Colors.white, size: 36),
+                  child: Icon(
+                    Icons.check_rounded,
+                    color: Colors.white,
+                    size: 36,
+                  ),
                 ),
               ),
           ],

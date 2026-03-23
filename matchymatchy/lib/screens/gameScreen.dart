@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../config/difficultyConfig.dart';
 import '../config/gamesScreenLogic.dart';
 import '../widgets/gameScreenWidgets.dart';
+import '../services/audio_manager.dart';
 
 // game screen
 
@@ -28,12 +29,22 @@ class _GameScreenState extends State<GameScreen>
   @override
   void dispose() {
     disposeGame();
+    AudioManager.playBgm();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (gameWon || timeUp) return buildEndScreen();
+    if (gameWon) {
+      AudioManager.playWinSfx();
+      return buildEndScreen();
+    }
+
+    if (timeUp) {
+      AudioManager.playLoseSfx();
+      return buildEndScreen();
+    }
+
     return buildGameScreen();
   }
 }

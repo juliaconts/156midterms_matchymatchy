@@ -77,8 +77,8 @@ class DifficultyConfig {
         return const DifficultyConfig(
           pairs: 6,
           seconds: 30,
-          crossAxisCount: 3,
-          childAspectRatio: 0.90,
+          crossAxisCount: 4,
+          childAspectRatio: 0.72,
           assets: mediumAssets,
         );
       case GameDifficulty.hard:

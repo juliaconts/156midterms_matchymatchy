@@ -3,8 +3,8 @@ import '../config/difficultyConfig.dart';
 import '../animations/animations.dart';
 import '../widgets/decoratedScreen.dart';
 import '../widgets/difficultyButton.dart';
+import '../services/audio_manager.dart';
 import 'gameScreen.dart';
-
 
 // choosing difficulty sreen
 class DifficultyScreen extends StatefulWidget {
@@ -21,13 +21,12 @@ class _DifficultyScreenState extends State<DifficultyScreen>
     super.initState();
   }
 
+  void _navigateToGame(GameDifficulty difficulty) async {
+    await AudioManager.stopBgm();
 
-  void _navigateToGame(GameDifficulty difficulty) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => GameScreen(difficulty: difficulty),
-      ),
+      MaterialPageRoute(builder: (_) => GameScreen(difficulty: difficulty)),
     );
   }
 
