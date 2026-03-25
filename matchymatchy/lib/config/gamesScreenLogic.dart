@@ -74,6 +74,8 @@ mixin GameScreenLogic<T extends StatefulWidget>
     }
   }
 
+  void onGameWon() {} 
+  
   // start the countdown timer
   void startTimer() {
     timer?.cancel();
@@ -127,6 +129,7 @@ mixin GameScreenLogic<T extends StatefulWidget>
           if (cards.every((c) => c.isMatched)) {
             gameWon = true;
             timer?.cancel();
+            onGameWon();
           }
         });
       });
