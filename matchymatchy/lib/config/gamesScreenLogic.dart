@@ -69,12 +69,13 @@ mixin GameScreenLogic<T extends StatefulWidget>
   // dispose all controllers and timers to prevent memory leaks
   void disposeGame() {
     timer?.cancel();
+    AudioManager.stopTickingSfx();
     for (final c in flipControllers) {
       c.dispose();
     }
   }
 
-  void onGameWon() {} 
+  void onGameWon() {}
 
   // start the countdown timer
   void startTimer() {

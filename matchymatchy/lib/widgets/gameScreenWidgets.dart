@@ -1,35 +1,39 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:matchymatchy/services/audio_manager.dart';
 import '../config/difficultyConfig.dart';
 import '../widgets/appBackground.dart';
 import '../widgets/cardFace.dart';
 import '../widgets/cardBack.dart';
 import '../config/gamesScreenLogic.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:confetti/confetti.dart'; 
+import 'package:confetti/confetti.dart';
 
 // gamescreen widgets
 
-mixin GameScreenWidgets<T extends StatefulWidget> on State<T>, TickerProviderStateMixin<T>, GameScreenLogic<T> {
+mixin GameScreenWidgets<T extends StatefulWidget>
+    on State<T>, TickerProviderStateMixin<T>, GameScreenLogic<T> {
   GameDifficulty get difficulty;
-  late ConfettiController _confettiController; 
+  late ConfettiController _confettiController;
 
   @override
   void initState() {
     super.initState();
-    _confettiController = ConfettiController(duration: const Duration(seconds: 30));
+    _confettiController = ConfettiController(
+      duration: const Duration(seconds: 30),
+    );
   }
 
   @override
   void dispose() {
-    _confettiController.dispose(); 
+    _confettiController.dispose();
     super.dispose();
   }
 
   @override
-void onGameWon() {
-  _confettiController.play();
-}
+  void onGameWon() {
+    _confettiController.play();
+  }
 
   Widget buildGameScreen() {
     return Scaffold(
@@ -72,11 +76,11 @@ void onGameWon() {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                    Image.asset(
-                    gameWon ? 'assets/gif/happycat.gif' : 'assets/gif/sadcat.gif' ,
-                    height: 200.0,
-                    width: 200.0,
-                  ),
+                Image.asset(
+                  gameWon ? 'assets/gif/happycat.gif' : 'assets/gif/sadcat.gif',
+                  height: 200.0,
+                  width: 200.0,
+                ),
                 const SizedBox(height: 10),
                 const SizedBox(height: 16),
                 Text(
@@ -94,17 +98,23 @@ void onGameWon() {
               ],
             ),
           ),
-          if (gameWon) 
+          if (gameWon)
             Align(
               alignment: Alignment.topCenter,
               child: ConfettiWidget(
-              confettiController: _confettiController, 
-              blastDirectionality: BlastDirectionality.explosive,
-              shouldLoop: false,
-              colors: const [Colors.green, Colors.blue, Colors.pink, Colors.orange, Colors.yellow],
-              gravity: 0.1,
+                confettiController: _confettiController,
+                blastDirectionality: BlastDirectionality.explosive,
+                shouldLoop: false,
+                colors: const [
+                  Colors.green,
+                  Colors.blue,
+                  Colors.pink,
+                  Colors.orange,
+                  Colors.yellow,
+                ],
+                gravity: 0.1,
+              ),
             ),
-          ),
         ],
       ),
     );
@@ -152,7 +162,11 @@ void onGameWon() {
 
   Widget _buildExitButton() {
     return GestureDetector(
-      onTap: () => Navigator.pop(context),
+      onTap: () {
+        timer?.cancel();
+        AudioManager.stopTickingSfx();
+        Navigator.pop(context);
+      },
       child: Container(
         width: 44,
         height: 44,
@@ -228,12 +242,11 @@ void onGameWon() {
   Widget _buildLossSubtitle() {
     return Padding(
       padding: const EdgeInsets.only(top: 8),
-      child: 
-         Text(
+      child: Text(
         'Better luck next time',
         style: GoogleFonts.indieFlower(
           color: Colors.white.withOpacity(0.7),
-          fontSize:20,
+          fontSize: 20,
         ),
       ),
     );

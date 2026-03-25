@@ -7,7 +7,6 @@ import '../services/audio_manager.dart';
 import 'gameScreen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 // choosing difficulty sreen
 class DifficultyScreen extends StatefulWidget {
   const DifficultyScreen({super.key});
@@ -42,13 +41,13 @@ class _DifficultyScreenState extends State<DifficultyScreen>
             child: Column(
               children: [
                 SizedBox(
-                    width: 450,
-                    height: 300, 
-                    child: Image.asset(
-                      'assets/logos/matchy.png',
-                      fit: BoxFit.contain, 
-                    ),
+                  width: 450,
+                  height: 300,
+                  child: Image.asset(
+                    'assets/logos/matchy.png',
+                    fit: BoxFit.contain,
                   ),
+                ),
                 Text(
                   'choose a difficulty',
                   style: GoogleFonts.indieFlower(
