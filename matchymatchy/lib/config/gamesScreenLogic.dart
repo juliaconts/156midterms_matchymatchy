@@ -82,9 +82,14 @@ mixin GameScreenLogic<T extends StatefulWidget>
       setState(() {
         if (secondsLeft > 0) {
           secondsLeft--;
+
+          if (secondsLeft <= 10) {
+            AudioManager.startTickingSfx();
+          }
         } else {
           timeUp = true;
           timer?.cancel();
+          AudioManager.stopTickingSfx();
         }
       });
     });
@@ -127,6 +132,7 @@ mixin GameScreenLogic<T extends StatefulWidget>
           if (cards.every((c) => c.isMatched)) {
             gameWon = true;
             timer?.cancel();
+            AudioManager.stopTickingSfx();
           }
         });
       });
