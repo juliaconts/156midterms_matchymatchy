@@ -59,31 +59,34 @@ class _HomeScreenState extends State<HomeScreen>
           ),
           const Spacer(flex: 3),
           ScaleTransition(
-            scale: _scaleIn,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40),
-              child: GestureDetector(
-                onTap: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const DifficultyScreen()),
-                ),
-                child: SizedBox(
-                  height: 58,
-                  child: Center(
-                    child: Text(
-                      'play',
-                      style: GoogleFonts.indieFlower(
-                        color: const Color.fromARGB(255, 254, 255, 213),
-                        fontSize: 34,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 1.2,
+              scale: _scaleIn,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: GestureDetector(
+                  onTap: () {
+                    AudioManager.playButtonSfx(); 
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const DifficultyScreen()),
+                    );
+                  },
+                  child: SizedBox(
+                    height: 58,
+                    child: Center(
+                      child: Text(
+                        'play',
+                        style: GoogleFonts.indieFlower(
+                          color: const Color.fromARGB(255, 254, 255, 213),
+                          fontSize: 34,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 1.2,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
           const SizedBox(height: 50),
         ],
       ),

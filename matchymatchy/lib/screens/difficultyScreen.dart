@@ -69,17 +69,26 @@ class _DifficultyScreenState extends State<DifficultyScreen>
                 children: [
                   DifficultyButton(
                     label: 'Easy',
-                    onPressed: () => _navigateToGame(GameDifficulty.easy),
+                    onPressed: () {
+                      AudioManager.playButtonSfx();
+                      _navigateToGame(GameDifficulty.easy);
+                    },
                   ),
                   const SizedBox(height: 12),
                   DifficultyButton(
                     label: 'Medium',
-                    onPressed: () => _navigateToGame(GameDifficulty.medium),
+                    onPressed: () {
+                      AudioManager.playButtonSfx();
+                      _navigateToGame(GameDifficulty.medium);
+                    },
                   ),
                   const SizedBox(height: 12),
                   DifficultyButton(
                     label: 'Hard',
-                    onPressed: () => _navigateToGame(GameDifficulty.hard),
+                    onPressed: () {
+                      AudioManager.playButtonSfx();
+                      _navigateToGame(GameDifficulty.hard);
+                    },
                   ),
                 ],
               ),
@@ -88,7 +97,10 @@ class _DifficultyScreenState extends State<DifficultyScreen>
           const SizedBox(height: 24),
           fadeOnly(
             child: TextButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: () {
+                AudioManager.playButtonSfx();
+                Navigator.pop(context);
+              },
               child: Text(
                 'back',
                 style: GoogleFonts.indieFlower(

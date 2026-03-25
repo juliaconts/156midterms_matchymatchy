@@ -1,7 +1,7 @@
 // card model to represent each card in the game
 class CardModel {
   final int id;
-  final String imagePath;
+  final String imagePath;        
   bool isFaceUp;
   bool isMatched;
 

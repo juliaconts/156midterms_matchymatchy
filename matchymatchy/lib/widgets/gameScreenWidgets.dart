@@ -6,11 +6,30 @@ import '../widgets/cardFace.dart';
 import '../widgets/cardBack.dart';
 import '../config/gamesScreenLogic.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:confetti/confetti.dart'; 
 
 // gamescreen widgets
 
 mixin GameScreenWidgets<T extends StatefulWidget> on State<T>, TickerProviderStateMixin<T>, GameScreenLogic<T> {
   GameDifficulty get difficulty;
+  late ConfettiController _confettiController; 
+
+  @override
+  void initState() {
+    super.initState();
+    _confettiController = ConfettiController(duration: const Duration(seconds: 30));
+  }
+
+  @override
+  void dispose() {
+    _confettiController.dispose(); 
+    super.dispose();
+  }
+
+  @override
+void onGameWon() {
+  _confettiController.play();
+}
 
   Widget buildGameScreen() {
     return Scaffold(
@@ -53,10 +72,12 @@ mixin GameScreenWidgets<T extends StatefulWidget> on State<T>, TickerProviderSta
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  gameWon ? '🎉' : '⏰',
-                  style: GoogleFonts.indieFlower(fontSize: 64),
-                ),
+                    Image.asset(
+                    gameWon ? 'assets/gif/happycat.gif' : 'assets/gif/sadcat.gif' ,
+                    height: 200.0,
+                    width: 200.0,
+                  ),
+                const SizedBox(height: 10),
                 const SizedBox(height: 16),
                 Text(
                   gameWon ? 'You matched them all!' : 'Time\'s up!',
@@ -71,6 +92,17 @@ mixin GameScreenWidgets<T extends StatefulWidget> on State<T>, TickerProviderSta
                 const SizedBox(height: 40),
                 _buildBackButton(),
               ],
+            ),
+          ),
+          if (gameWon) 
+            Align(
+              alignment: Alignment.topCenter,
+              child: ConfettiWidget(
+              confettiController: _confettiController, 
+              blastDirectionality: BlastDirectionality.explosive,
+              shouldLoop: false,
+              colors: const [Colors.green, Colors.blue, Colors.pink, Colors.orange, Colors.yellow],
+              gravity: 0.1,
             ),
           ),
         ],
@@ -196,7 +228,8 @@ mixin GameScreenWidgets<T extends StatefulWidget> on State<T>, TickerProviderSta
   Widget _buildLossSubtitle() {
     return Padding(
       padding: const EdgeInsets.only(top: 8),
-      child: Text(
+      child: 
+         Text(
         'Better luck next time',
         style: GoogleFonts.indieFlower(
           color: Colors.white.withOpacity(0.7),

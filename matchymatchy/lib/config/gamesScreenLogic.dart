@@ -3,10 +3,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import '../config/difficultyConfig.dart';
 import '../models/cardModel.dart';
+import '../services/audio_manager.dart';
 
 // game logic and state management for the game screen
 
-mixin GameScreenLogic<T extends StatefulWidget> on State<T>, TickerProviderStateMixin<T> {
+mixin GameScreenLogic<T extends StatefulWidget>
+    on State<T>, TickerProviderStateMixin<T> {
   late DifficultyConfig config;
 
   late List<CardModel> cards;
@@ -54,9 +56,10 @@ mixin GameScreenLogic<T extends StatefulWidget> on State<T>, TickerProviderState
 
     flipAnimations = flipControllers
         .map(
-          (c) => Tween<double>(begin: 0, end: 1).animate(
-            CurvedAnimation(parent: c, curve: Curves.easeInOut),
-          ),
+          (c) => Tween<double>(
+            begin: 0,
+            end: 1,
+          ).animate(CurvedAnimation(parent: c, curve: Curves.easeInOut)),
         )
         .toList();
 
@@ -71,6 +74,8 @@ mixin GameScreenLogic<T extends StatefulWidget> on State<T>, TickerProviderState
     }
   }
 
+  void onGameWon() {} 
+
   // start the countdown timer
   void startTimer() {
     timer?.cancel();
@@ -79,9 +84,14 @@ mixin GameScreenLogic<T extends StatefulWidget> on State<T>, TickerProviderState
       setState(() {
         if (secondsLeft > 0) {
           secondsLeft--;
+
+          if (secondsLeft <= 10) {
+            AudioManager.startTickingSfx();
+          }
         } else {
           timeUp = true;
           timer?.cancel();
+          AudioManager.stopTickingSfx();
         }
       });
     });
@@ -94,6 +104,8 @@ mixin GameScreenLogic<T extends StatefulWidget> on State<T>, TickerProviderState
     if (cards[index].isFaceUp) return;
     if (flippedIndices.length == 2) return;
     if (gameWon || timeUp) return;
+
+    AudioManager.playFlipSfx();
 
     setState(() {
       cards[index].isFaceUp = true;
@@ -111,6 +123,7 @@ mixin GameScreenLogic<T extends StatefulWidget> on State<T>, TickerProviderState
     final b = flippedIndices[1];
 
     if (cards[a].id == cards[b].id) {
+      AudioManager.playMatchSfx();
       Future.delayed(const Duration(milliseconds: 300), () {
         if (!mounted) return;
         setState(() {
@@ -121,10 +134,13 @@ mixin GameScreenLogic<T extends StatefulWidget> on State<T>, TickerProviderState
           if (cards.every((c) => c.isMatched)) {
             gameWon = true;
             timer?.cancel();
+            onGameWon();
+            AudioManager.stopTickingSfx();
           }
         });
       });
     } else {
+      AudioManager.playWrongSfx();
       Future.delayed(const Duration(milliseconds: 600), () {
         if (!mounted) return;
         setState(() {
@@ -139,7 +155,7 @@ mixin GameScreenLogic<T extends StatefulWidget> on State<T>, TickerProviderState
     }
   }
 
-  // timer 
+  // timer
   String get timerLabel {
     final m = secondsLeft ~/ 60;
     final s = secondsLeft % 60;
