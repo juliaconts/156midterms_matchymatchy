@@ -34,5 +34,42 @@
 </head>
 <body>
   <script src="flutter_bootstrap.js" async></script>
+  <script>
+    // Pre-load all SFX into Web Audio API buffers
+  const _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const _buffers = {};
+
+  async function loadSound(name, url) {
+    const res = await fetch(url);
+    const buf = await res.arrayBuffer();
+    _buffers[name] = await _audioCtx.decodeAudioData(buf);
+  }
+
+  async function initSounds() {
+    await Promise.all([
+      loadSound('flip',  'assets/sounds/cardflip.mp3'),
+      loadSound('match', 'assets/sounds/matched.mp3'),
+      loadSound('wrong', 'assets/sounds/faaah.mp3'),
+      loadSound('win',   'assets/sounds/yippee-tbh.mp3'),
+      loadSound('lose',  'assets/sounds/downer_noise.mp3'),
+      loadSound('button', 'assets/sounds/button-click.mp3'),
+      loadSound('clock-tick', 'assets/sounds/clock-tick.mp3')
+    ]);
+  }
+
+  function playSound(name) {
+    if (!_buffers[name]) return;
+    const source = _audioCtx.createBufferSource();
+    source.buffer = _buffers[name];
+    source.connect(_audioCtx.destination);
+    source.start(0);
+  }
+
+  function resumeAudioContext() {
+    if (_audioCtx.state === 'suspended') _audioCtx.resume();
+  }
+
+  initSounds();
+  </script>
 </body>
 </html>

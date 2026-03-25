@@ -47,10 +47,16 @@ class _HomeScreenState extends State<HomeScreen>
                 width: double.infinity,
                 height: 58,
                 child: ElevatedButton(
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (_) => const DifficultyScreen()),
-                  ),
+                  onPressed: () {
+                    AudioManager.playButtonSfx();
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const DifficultyScreen(),
+                      ),
+                    );
+                  },
+
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(255, 24, 81, 41),
                     foregroundColor: const Color.fromARGB(255, 40, 94, 42),
