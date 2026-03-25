@@ -48,7 +48,15 @@ class AudioManager {
     if (kIsWeb) playSound('button');
   }
 
-  static void playClockSfx() {
-    if (kIsWeb) playSound('clock-tick');
+  static bool _ticking = false;
+
+  static void startTickingSfx() {
+    if (_ticking) return;
+    _ticking = true;
+    if (kIsWeb) playSound("clock-tick");
+  }
+
+  static void stopTickingSfx() {
+    _ticking = false;
   }
 }

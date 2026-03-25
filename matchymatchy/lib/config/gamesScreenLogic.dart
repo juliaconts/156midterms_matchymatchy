@@ -75,7 +75,7 @@ mixin GameScreenLogic<T extends StatefulWidget>
   }
 
   void onGameWon() {} 
-  
+
   // start the countdown timer
   void startTimer() {
     timer?.cancel();
@@ -84,9 +84,14 @@ mixin GameScreenLogic<T extends StatefulWidget>
       setState(() {
         if (secondsLeft > 0) {
           secondsLeft--;
+
+          if (secondsLeft <= 10) {
+            AudioManager.startTickingSfx();
+          }
         } else {
           timeUp = true;
           timer?.cancel();
+          AudioManager.stopTickingSfx();
         }
       });
     });
@@ -130,6 +135,7 @@ mixin GameScreenLogic<T extends StatefulWidget>
             gameWon = true;
             timer?.cancel();
             onGameWon();
+            AudioManager.stopTickingSfx();
           }
         });
       });
