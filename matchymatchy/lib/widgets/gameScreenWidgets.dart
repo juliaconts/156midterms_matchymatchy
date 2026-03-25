@@ -5,6 +5,7 @@ import '../widgets/appBackground.dart';
 import '../widgets/cardFace.dart';
 import '../widgets/cardBack.dart';
 import '../config/gamesScreenLogic.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // gamescreen widgets
 
@@ -54,14 +55,14 @@ mixin GameScreenWidgets<T extends StatefulWidget> on State<T>, TickerProviderSta
               children: [
                 Text(
                   gameWon ? '🎉' : '⏰',
-                  style: const TextStyle(fontSize: 64),
+                  style: GoogleFonts.indieFlower(fontSize: 64),
                 ),
                 const SizedBox(height: 16),
                 Text(
                   gameWon ? 'You matched them all!' : 'Time\'s up!',
-                  style: const TextStyle(
+                  style: GoogleFonts.indieFlower(
                     color: Colors.white,
-                    fontSize: 26,
+                    fontSize: 30,
                     fontWeight: FontWeight.w800,
                     letterSpacing: 0.5,
                   ),
@@ -104,7 +105,7 @@ mixin GameScreenWidgets<T extends StatefulWidget> on State<T>, TickerProviderSta
           const SizedBox(width: 6),
           Text(
             timerLabel,
-            style: TextStyle(
+            style: GoogleFonts.indieFlower(
               color: timerColor,
               fontSize: 22,
               fontWeight: FontWeight.w800,
@@ -135,9 +136,9 @@ mixin GameScreenWidgets<T extends StatefulWidget> on State<T>, TickerProviderSta
   Widget _buildDifficultyLabel() {
     return Text(
       difficulty.label,
-      style: TextStyle(
+      style: GoogleFonts.indieFlower(
         color: Colors.white.withOpacity(0.55),
-        fontSize: 11,
+        fontSize: 20,
         fontWeight: FontWeight.w700,
         letterSpacing: 3,
       ),
@@ -197,35 +198,24 @@ mixin GameScreenWidgets<T extends StatefulWidget> on State<T>, TickerProviderSta
       padding: const EdgeInsets.only(top: 8),
       child: Text(
         'Better luck next time',
-        style: TextStyle(
+        style: GoogleFonts.indieFlower(
           color: Colors.white.withOpacity(0.7),
-          fontSize: 15,
+          fontSize:20,
         ),
       ),
     );
   }
 
   Widget _buildBackButton() {
-    return SizedBox(
-      width: 200,
-      height: 52,
-      child: ElevatedButton(
-        onPressed: () => Navigator.pop(context),
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          foregroundColor: const Color(0xFF388E3C),
-          elevation: 6,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14),
-          ),
-        ),
-        child: const Text(
-          'Back',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w800,
-            letterSpacing: 0.8,
-          ),
+    return TextButton(
+      onPressed: () => Navigator.pop(context),
+      child: Text(
+        'back',
+        style: GoogleFonts.indieFlower(
+          color: Colors.white.withOpacity(0.75),
+          fontSize: 20,
+          fontWeight: FontWeight.w500,
+          letterSpacing: 0.5,
         ),
       ),
     );
