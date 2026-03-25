@@ -8,15 +8,7 @@ class AppBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color(0xFF81C784),
-            Color(0xFF4CAF50),
-            Color(0xFF388E3C),
-          ],
-        ),
+        color: Color.fromARGB(255, 27, 75, 47), 
       ),
     );
   }
@@ -40,7 +32,7 @@ class BackgroundCircle extends StatelessWidget {
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.white.withOpacity(opacity),
+        color: const Color.fromARGB(255, 58, 2, 2).withOpacity(opacity),
       ),
     );
   }

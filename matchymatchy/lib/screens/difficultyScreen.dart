@@ -5,6 +5,8 @@ import '../widgets/decoratedScreen.dart';
 import '../widgets/difficultyButton.dart';
 import '../services/audio_manager.dart';
 import 'gameScreen.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 
 // choosing difficulty sreen
 class DifficultyScreen extends StatefulWidget {
@@ -36,15 +38,22 @@ class _DifficultyScreenState extends State<DifficultyScreen>
       child: Column(
         children: [
           const Spacer(flex: 2),
-          fadeSlide(
+          fadeOnly(
             child: Column(
               children: [
-                Image.asset('assets/logos/logo2.png', height: 250),
+                SizedBox(
+                    width: 450,
+                    height: 300, 
+                    child: Image.asset(
+                      'assets/logos/matchy.png',
+                      fit: BoxFit.contain, 
+                    ),
+                  ),
                 Text(
-                  'Choose a difficulty',
-                  style: TextStyle(
-                    color: Colors.white.withOpacity(0.75),
-                    fontSize: 15,
+                  'choose a difficulty',
+                  style: GoogleFonts.indieFlower(
+                    color: const Color.fromARGB(255, 254, 255, 213),
+                    fontSize: 28,
                     letterSpacing: 0.5,
                     fontWeight: FontWeight.w400,
                   ),
@@ -93,10 +102,10 @@ class _DifficultyScreenState extends State<DifficultyScreen>
                 Navigator.pop(context);
               },
               child: Text(
-                'Back',
-                style: TextStyle(
-                  color: Colors.white.withOpacity(0.75),
-                  fontSize: 15,
+                'back',
+                style: GoogleFonts.indieFlower(
+                  color: const Color.fromARGB(255, 254, 255, 213),
+                  fontSize: 20,
                   fontWeight: FontWeight.w500,
                   letterSpacing: 0.5,
                 ),

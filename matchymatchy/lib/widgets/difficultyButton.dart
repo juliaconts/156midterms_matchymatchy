@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // difficulty button
 class DifficultyButton extends StatelessWidget {
@@ -14,22 +15,22 @@ class DifficultyButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: double.infinity,
-      height: 58,
+      width: 150,
+      height: 45,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.white,
-          foregroundColor: const Color(0xFF388E3C),
+          backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+          foregroundColor: const Color.fromARGB(255, 88, 32, 32),
           elevation: 6,
-          shadowColor: Colors.black26,
+          shadowColor: const Color.fromARGB(0, 0, 0, 0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
         ),
         child: Text(
           label,
-          style: const TextStyle(
+          style: GoogleFonts.indieFlower(
             fontSize: 20,
             fontWeight: FontWeight.w800,
             letterSpacing: 1.0,
